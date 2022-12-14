@@ -1,0 +1,140 @@
+.background {
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(31,198,38,0.4612045501794467) 0%, rgba(0,255,246,1) 100%);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.is-centered {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.main-text {
+  font-size: 36px;
+}
+
+.mic {
+  width: 70px;
+  fill: white;
+  position: absolute;
+}
+
+.circle {
+  border: 4px solid white;
+  height: 160px;
+  width: 160px;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+}
+
+.out-circle {
+  cursor: pointer;
+  transition: all 200ms ease-out;
+  opacity: 0.5;
+  border: 0 solid white;
+  height: 160px;
+  width: 160px;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  box-sizing: content-box;
+
+  &:hover {
+    border: 12px solid white;
+  }
+}
+
+.stop {
+  fill: white;
+  width: 50px;
+  position: absolute;
+}
+
+.text {
+  height: 39px;
+  margin-top: 80px;
+  color: white;
+  font-size: 26px;
+  font-family: Rubik, "Liberation Sans", sans-serif;
+  font-weight: bold;
+}
+
+.rectangles {
+  margin-top: 76px;
+  height: 43px;
+  width: 45px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: end;
+}
+
+.rect {
+  background: white;
+  width: 13px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+}
+
+.rect2 {
+  animation: rect2 1.2s infinite linear;
+}
+
+.rect1 {
+  animation: rect1 1.2s infinite linear;
+}
+
+.rect3 {
+  animation: rect3 1.2s infinite linear;
+}
+
+@keyframes rect2 {
+  0%, 7.5% {
+    height: 5px;
+  }
+
+  50% {
+    height: 30px
+  }
+
+  92.5%, 100% {
+    height: 5px;
+  }
+}
+
+
+
+@keyframes rect3 {
+  0% {
+    height: 5px;
+  }
+
+  42.5% {
+    height: 30px
+  }
+
+  85%, 100% {
+    height: 5px;
+  }
+}
+
+@keyframes rect1 {
+  0%, 15% {
+    height: 5px;
+  }
+
+  57.5% {
+    height: 30px
+  }
+
+  100% {
+    height: 5px;
+  }
+}
+.crutch {
+  height: 39px;
+  width: 1px;
+}

@@ -1,0 +1,6 @@
+/dist/
+/target/
+/web/dist/
+/server/model.tflite
+/server/wiki-ru-6gram.scorer
+.idea
