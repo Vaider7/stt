@@ -3,6 +3,8 @@ use axum::{routing::post, Json, Router};
 use headers::HeaderValue;
 use std::sync::{Mutex};
 use std::{net::SocketAddr};
+
+use axum_extra::routing::SpaRouter;
 use tracing::debug;
 
 use serde_json::{json, Value};
@@ -17,9 +19,9 @@ use tower_http::cors::{Any, CorsLayer};
 
 lazy_static! {
     static ref MODEL: Mutex<Model> = {
-        let mut model = Model::new("model.tflite").expect("Creating model");
+        let mut model = Model::new("./server/model.tflite").expect("Creating model");
         model
-            .enable_external_scorer("wiki-ru-6gram.scorer")
+            .enable_external_scorer("./server/wiki-ru-6gram.scorer")
             .expect("Adding scorer");
         Mutex::new(model)
     };
@@ -47,7 +49,8 @@ async fn main() {
                 .allow_methods(Any)
                 .allow_headers(Any),
         )
-        .layer(DefaultBodyLimit::max(usize::MAX));
+        .layer(DefaultBodyLimit::max(usize::MAX))
+        .merge(SpaRouter::new("/", "./web/dist").index_file("index.html"));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     debug!("listening on {}", addr);

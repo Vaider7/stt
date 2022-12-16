@@ -1,0 +1,24 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.build_web]
+env = { "CARGO_MAKE_WORKING_DIRECTORY" = "./web" }
+install_crate = "trunk"
+command = "trunk"
+args = ["build", "--release", "./web/index.html"]
+
+[tasks.build_server]
+command = "cargo"
+args = ["build", "--release", "--bin", "server"]
+
+
+[tasks.run_server]
+script = "./target/release/server"
+
+[tasks.app_flow]
+workspace = false
+dependencies = [
+    "build_web",
+    "build_server",
+    "run_server"
+]

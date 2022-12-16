@@ -28,11 +28,9 @@ pub fn create_audio_processor(
     audio_ctx: &AudioContext,
     sample_rate: f32,
     scope: Scope<App>,
+    downsampler: Worker,
 ) -> ScriptProcessorNode {
     let processor = audio_ctx.create_script_processor_with_buffer_size_and_number_of_input_channels_and_number_of_output_channels(4096, 1, 1).unwrap();
-
-    let downsampler =
-        Worker::new("/assets/downsampling_worker.js").expect("Adding worker");
 
     let init_message = JsValue::from(format!(
         "{{\"command\": \"init\", \"inputSampleRate\": {}}}",
@@ -96,6 +94,7 @@ pub struct App {
     pub media_stream_source: Option<MediaStreamAudioSourceNode>,
     pub chunks: Vec<i16>,
     pub is_recognition: bool,
+    pub worker: Option<Worker>,
 }
 
 pub enum AppMsg {
@@ -123,6 +122,7 @@ impl Component for App {
             media_stream_source: None,
             processor: None,
             chunks: vec![],
+            worker: None,
         }
     }
 
@@ -197,7 +197,12 @@ impl Component for App {
                 );
                 let sample_rate = self.audio_ctx.sample_rate();
                 let scope = ctx.link().to_owned();
-                self.processor = Some(create_audio_processor(&self.audio_ctx, sample_rate, scope));
+
+                if self.worker.is_none() {
+                    self.worker = Some(Worker::new("/assets/downsampling_worker.js").unwrap());
+                }
+
+                self.processor = Some(create_audio_processor(&self.audio_ctx, sample_rate, scope, self.worker.clone().unwrap()));
                 self.media_stream_source
                     .as_ref()
                     .unwrap()
